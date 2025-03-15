@@ -13,6 +13,8 @@ philosopher, there is only 1 chopstick. This means that the philosophers must sh
 neighbors. This can thus result in a deadlock situation, where one hungry philosopher never relinquishes their chopstick
 to their neighbor, or even starvation, where the philosophers are unable to ever eat and thus are starved.
 
+![An image depicting the Dining Philosopher Problem.](img/TDP.png)
+
 The goal of this project is to develop a coded solution that will solve potential deadlock and starvation scenarios. The
 following code best provides a solution to the infamous dining philosopher problem.
 
