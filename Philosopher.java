@@ -4,97 +4,119 @@ public class Philosopher implements Runnable {
 
     private final Thread thread;
     private int dumplingsEaten = 0;
-    private int totalChopsticks = 0;
+    private int totalChopsticks;
     private int chopsticksOwned = 0;
     private int threadNum;
-    private static boolean thinkAndEat;
-    private int eatenDumplings = 0;
+    private volatile boolean thinkAndEat;
     private static final int NUM_PHILOSOPHERS = 5;
     public static final long PROCESSING_TIME = 5 * 1000;
     
         @Override
-        public void run() {
-            while(thinkAndEat){
-                synchronized (this) {
-                    try {
-                        if(getChopsticks() >=  2) {
-                            eat();
-                        }
-                        else{
-                            wait();
-                        }
-                    } 
-                    catch (InterruptedException e) {}
+    public void run() {
+        while(thinkAndEat){
+            synchronized (this) {
+                try {
+                    if(acquire()) {
+                        eat();
+                    }
+                    else{
+                        wait();
+                    }
                 }
+                catch (InterruptedException e) {} 
             }
         }
-    
-        public void eat() {
-            System.out.println("Philosopher #" + threadNum + " has started eating...");
+        System.out.println(thread.getName() + " done");
+        getEaten();
+    }
+
+    public void eat() {
+        System.out.println("Philosopher #" + threadNum + " has started eating...");
+        dumplingsEaten += 1;
+        giveUpChopsticks();
+    }
+
+    public void giveUpChopsticks() {
+        totalChopsticks += 2;
+        chopsticksOwned -= 2;
+        System.out.println("Philosopher #" + threadNum + " has resumed thinking...");
+    }
+
+    public Philosopher(int i){
+        thread = new Thread(this, "Philosopher #" + threadNum);
+        this.threadNum = i;
+    }
+
+    public void startPhilosopher(){
+        thinkAndEat = true;
+        System.out.println("Philosopher #" + threadNum + " is active.");
+        thread.start();
+    }
+
+    /**
+     * @param time - length of time we want to sleep the thread
+     * @param errMsg - error message thrown when we slepe the thread and it
+     * throws the InterruptedException
+     * @return void
+     */
+    private static void delay(long time, String errMsg) {
+        long sleepTime = Math.max(1, time);
+        try {
+            Thread.sleep(sleepTime);
+        } catch (InterruptedException e) {
+            System.err.println(errMsg);
         }
+    }
     
-        public void giveUpChopsticks() {
-            System.out.println("Philosopher #" + threadNum + " has resumed thinking...");
+    public void stopPhilosopher(){
+        thinkAndEat = false;
+    }
+
+    public int getChopsticks() {
+        return this.chopsticksOwned;
+    }
+
+    public boolean acquire(){
+        if(totalChopsticks >= 2){
+            totalChopsticks -= 2;
+            chopsticksOwned += 2;
+            return true;
         }
-    
-        public Philosopher(int i){
-            thread = new Thread(this, "Philosopher #" + threadNum);
-            this.threadNum = i;
+        return false;
+    }
+
+    public String getEaten() {
+        return "Philosopher #" + threadNum + " ate " + dumplingsEaten;
+    }
+
+    /**
+ * Waits for Plant to stop and for all Workers to stop
+ */
+    public void waitToStop() {
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            System.err.println(thread.getName() + " stop malfunction");
         }
-    
-        public void startPhilosopher(){
-            thinkAndEat = true;
-            thread.start();
+    }
+
+    public static void main(String[] args) {
+        Philosopher[] philosophers = new Philosopher[NUM_PHILOSOPHERS];
+        totalChopsticks = NUM_PHILOSOPHERS;
+        for(int i = 0;i < NUM_PHILOSOPHERS;i++){
+            philosophers[i] = new Philosopher(i+1);
+            philosophers[i].startPhilosopher();
         }
-    
-        /**
-         * @param time - length of time we want to sleep the thread
-         * @param errMsg - error message thrown when we slepe the thread and it
-         * throws the InterruptedException
-         * @return void
-         */
-        private static void delay(long time, String errMsg) {
-            long sleepTime = Math.max(1, time);
-            try {
-                Thread.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                System.err.println(errMsg);
-            }
-        }
+
+        delay(PROCESSING_TIME, "Thinking Malfunction");
         
-        public void stopPhilosopher(){
-            try {
-                thread.join();
-            }
-            catch (InterruptedException e) {
-                System.err.println(thread.getName() + " stop malfunction");
-            }
-        }
-    
-        public int getChopsticks() {
-            return this.chopsticksOwned;
+        for(Philosopher p : philosophers){
+            p.stopPhilosopher();
         }
 
-        public String getEaten() {
-            return "Philosopher #" + threadNum + " ate " + eatenDumplings;
+        for(Philosopher p : philosophers){
+            p.waitToStop();
+            p.getEaten();
         }
-    
-        public static void main(String[] args) {
-            Philosopher[] philosophers = new Philosopher[NUM_PHILOSOPHERS];
-            int totalChopsticks = NUM_PHILOSOPHERS;
-            for(int i = 0;i < NUM_PHILOSOPHERS;i++){
-                philosophers[i] = new Philosopher(i);
-                philosophers[i].startPhilosopher();
-            }
-
-            delay(PROCESSING_TIME, "Thinking Malfunction");
-
-            for(int i = 0;i < NUM_PHILOSOPHERS;i++){
-                philosophers[i].stopPhilosopher();
-            }
-
-            for(int i = 0;i < NUM_PHILOSOPHERS;i++){
-                System.out.println(philosophers[i].getEaten());
-            }
     }
 }
