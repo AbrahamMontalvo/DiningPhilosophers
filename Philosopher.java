@@ -14,17 +14,13 @@ public class Philosopher implements Runnable {
     @Override
     public void run() {
         while (thinkAndEat) {
-            synchronized (this) {
-                try {
-                    if (acquire()) {
-                        eat();
-                        Thread.sleep(50);
-                    } else {
-                        wait();
-                    }
-                } catch (InterruptedException e) {
+            try {
+                if (acquire()) {
+                    eat();
+                } else {
+                    wait();
                 }
-            }
+            } catch (InterruptedException e) {}
         }
         System.out.println(thread.getName() + " done");
         System.out.println(getEaten());
@@ -32,9 +28,9 @@ public class Philosopher implements Runnable {
 
     public void eat() {
         System.out.println("Philosopher #" + threadNum + " has started eating...");
-        System.out.println("There are " + totalChopsticks + " left.\n");
+        System.out.println("There is (are) " + totalChopsticks + " chopstick(s) left.\n");
         try {
-            Thread.sleep(250);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
         }
         dumplingsEaten += 1;
@@ -45,6 +41,7 @@ public class Philosopher implements Runnable {
         totalChopsticks += 2;
         chopsticksOwned -= 2;
         System.out.println("Philosopher #" + threadNum + " has resumed thinking...");
+        System.out.println("There is (are) " + totalChopsticks + " chopstick(s) left.\n");
     }
 
     public Philosopher(int i) {
