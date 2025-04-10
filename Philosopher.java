@@ -7,20 +7,19 @@ public class Philosopher implements Runnable {
     private static int totalChopsticks;
     private int chopsticksOwned = 0;
     private int threadNum;
-    private volatile boolean thinkAndEat;
+    public volatile boolean thinkAndEat;
     private static final int NUM_PHILOSOPHERS = 5;
     public static final long PROCESSING_TIME = 5 * 1000;
+    private volatile boolean myTurn = false;
 
     @Override
     public void run() {
+        thinkAndEat = true;
         while (thinkAndEat) {
-            try {
-                if (acquire()) {
-                    eat();
-                } else {
-                    wait();
-                }
-            } catch (InterruptedException e) {}
+            synchronized (Philosopher.class) {
+                acquire();
+            }
+            delay(500, "Thinking interrupted"); // Add delay to simulate thinking
         }
         System.out.println(thread.getName() + " done");
         System.out.println(getEaten());
@@ -29,15 +28,12 @@ public class Philosopher implements Runnable {
     public void eat() {
         System.out.println("Philosopher #" + threadNum + " has started eating...");
         System.out.println("There is (are) " + totalChopsticks + " chopstick(s) left.\n");
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-        }
         dumplingsEaten += 1;
-        giveUpChopsticks();
+        delay(500, "Eating interrupted"); // simulate eating
+        release();
     }
 
-    public void giveUpChopsticks() {
+    public void release() {
         totalChopsticks += 2;
         chopsticksOwned -= 2;
         System.out.println("Philosopher #" + threadNum + " has resumed thinking...");
@@ -50,7 +46,6 @@ public class Philosopher implements Runnable {
     }
 
     public void startPhilosopher() {
-        thinkAndEat = true;
         System.out.println("Philosopher #" + threadNum + " is active.");
         thread.start();
     }
@@ -78,13 +73,13 @@ public class Philosopher implements Runnable {
         return this.chopsticksOwned;
     }
 
-    public boolean acquire() {
+    public void acquire() {
         if (totalChopsticks >= 2) {
+            myTurn = true;
             totalChopsticks -= 2;
             chopsticksOwned += 2;
-            return true;
+            eat();
         }
-        return false;
     }
 
     public String getEaten() {
@@ -92,7 +87,7 @@ public class Philosopher implements Runnable {
     }
 
     /**
-     * Waits for Plant to stop and for all Workers to stop
+     * Waits for Philosopher to stop
      */
     public void waitToStop() {
         try {
