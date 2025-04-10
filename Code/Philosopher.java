@@ -1,4 +1,4 @@
-package DiningPhilosophers;
+package code;
 
 public class Philosopher implements Runnable {
 
