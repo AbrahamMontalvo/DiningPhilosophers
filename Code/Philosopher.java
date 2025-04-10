@@ -12,6 +12,9 @@ public class Philosopher implements Runnable {
     public static final long PROCESSING_TIME = 5 * 1000;
     private volatile boolean myTurn = false;
 
+    /**
+     * Method refactored by ChatGPT
+     */
     @Override
     public void run() {
         thinkAndEat = true;
@@ -25,6 +28,10 @@ public class Philosopher implements Runnable {
         System.out.println(getEaten());
     }
 
+    /**
+     * Method refactored by ChatGPT
+     * 
+     */
     public void eat() {
         System.out.println("Philosopher #" + threadNum + " has started eating...");
         System.out.println("There is (are) " + totalChopsticks + " chopstick(s) left.\n");
