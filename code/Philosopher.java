@@ -1,5 +1,4 @@
-
-public class PhilosopherSync implements Runnable {
+public class Philosopher implements Runnable {
 
     private final Thread thread;
     private int dumplingsEaten = 0;
@@ -18,7 +17,7 @@ public class PhilosopherSync implements Runnable {
     public void run() {
         thinkAndEat = true;
         while (thinkAndEat) {
-            synchronized (PhilosopherSync.class) {
+            synchronized (Philosopher.class) {
                 acquire();
             }
             delay(500, "Thinking interrupted"); // Add delay to simulate thinking
@@ -46,7 +45,7 @@ public class PhilosopherSync implements Runnable {
         System.out.println("There is (are) " + totalChopsticks + " chopstick(s) left.\n");
     }
 
-    public PhilosopherSync(int i) {
+    public Philosopher(int i) {
         thread = new Thread(this, "Philosopher #" + i);
         this.threadNum = i;
     }
@@ -104,20 +103,20 @@ public class PhilosopherSync implements Runnable {
     }
 
     public static void main(String[] args) {
-        PhilosopherSync[] philosophers = new PhilosopherSync[NUM_PHILOSOPHERS];
+        Philosopher[] philosophers = new Philosopher[NUM_PHILOSOPHERS];
         totalChopsticks = NUM_PHILOSOPHERS;
         for (int i = 0; i < NUM_PHILOSOPHERS; i++) {
-            philosophers[i] = new PhilosopherSync(i + 1);
+            philosophers[i] = new Philosopher(i + 1);
             philosophers[i].startPhilosopher();
         }
 
         delay(PROCESSING_TIME, "Thinking Malfunction");
 
-        for (PhilosopherSync p : philosophers) {
+        for (Philosopher p : philosophers) {
             p.stopPhilosopher();
         }
 
-        for (PhilosopherSync p : philosophers) {
+        for (Philosopher p : philosophers) {
             p.waitToStop();
             p.getEaten();
         }
