@@ -22,10 +22,6 @@ public class Philosopher implements Runnable {
     // The length of the simulations we want to run
     public static final long PROCESSING_TIME = 5 * 1000;
 
-    // Boolean value that dictates whether or not it is the Philosopher's turn to
-    // eat
-    private volatile boolean myTurn = false;
-
     /**
      * Method refactored by ChatGPT
      * 
@@ -126,7 +122,6 @@ public class Philosopher implements Runnable {
      */
     public void acquire() {
         if (totalChopsticks >= 2) {
-            myTurn = true;
             totalChopsticks -= 2;
             chopsticksOwned += 2;
             eat();
