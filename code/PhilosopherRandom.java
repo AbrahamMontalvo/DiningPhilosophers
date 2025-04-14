@@ -111,7 +111,7 @@ public class PhilosopherRandom implements Runnable {
         PhilosopherRandom[] philosophers = new PhilosopherRandom[NUM_PHILOSOPHERS];
         totalChopsticks = NUM_PHILOSOPHERS;
         for (int i = 0; i < NUM_PHILOSOPHERS; i++) {
-            philosophers[i] = new PhilosopherRandom(i + 1, randNum.nextInt(1,totalChopsticks));
+            philosophers[i] = new PhilosopherRandom(i + 1, randNum.nextInt(1,totalChopsticks+1));
             philosophers[i].startPhilosopher();
         }
 
