@@ -1,3 +1,13 @@
+
+/**
+ * File: PhilosopherRandom.java
+ * Author(s): Abigail Brown and Abraham Montalvo
+ * Task: Group Project - Dining Philosophers
+ * Due Date: April 14, 2025
+ * 
+ * This is an additional exploration of our solution to Dining Philosophers that includes randomness.
+ */
+
 import java.util.Random;
 
 public class PhilosopherRandom implements Runnable {

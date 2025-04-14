@@ -1,3 +1,12 @@
+/**
+ * File: Philosopher.java
+ * Author(s): Abigail Brown and Abraham Montalvo
+ * Task: Group Project - Dining Philosophers
+ * Due Date: April 14, 2025
+ * 
+ * This is our official solution to the Dining Philosophers problem.
+ */
+
 public class Philosopher implements Runnable {
     private final Thread thread;
 
