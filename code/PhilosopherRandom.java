@@ -26,7 +26,7 @@ public class PhilosopherRandom implements Runnable {
     private static final int NUM_PHILOSOPHERS = 5;
 
     // The length of the simulations we want to run
-    public static final long PROCESSING_TIME = 5 * 1000;
+    public static final long PROCESSING_TIME = 10 * 1000;
 
     // Boolean value that dictates whether or not it is the Philosopher's turn to
     // eat
