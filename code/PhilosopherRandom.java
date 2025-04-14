@@ -1,3 +1,4 @@
+package code;
 
 /**
  * File: PhilosopherRandom.java
@@ -41,7 +42,7 @@ public class PhilosopherRandom implements Runnable {
     /**
      * Method refactored by ChatGPT
      * 
-     * Thread-running method that we use to control the behavior of each Philsopher
+     * Thread-running method that we use to control the behavior of each Philosopher
      * instance
      * Synchronized on the class itself to share the totalChopsticks variable
      */

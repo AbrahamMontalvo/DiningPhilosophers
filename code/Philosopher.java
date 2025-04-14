@@ -1,9 +1,11 @@
+package code;
+
 /**
  * File: Philosopher.java
  * Author(s): Abigail Brown and Abraham Montalvo
  * Task: Group Project - Dining Philosophers
  * Due Date: April 14, 2025
- * 
+ * <p>
  * This is our official solution to the Dining Philosophers problem.
  */
 
@@ -33,8 +35,8 @@ public class Philosopher implements Runnable {
 
     /**
      * Method refactored by ChatGPT
-     * 
-     * Thread-running method that we use to control the behavior of each Philsopher
+     * <p>
+     * Thread-running method that we use to control the behavior of each Philosopher
      * instance
      * Synchronized on the class itself to share the totalChopsticks variable
      */
@@ -53,7 +55,7 @@ public class Philosopher implements Runnable {
 
     /**
      * Method refactored by ChatGPT
-     * 
+     * <p>
      * Allows the Philosopher to eat one dumpling before releasing the chopsticks
      */
     public void eat() {
@@ -76,7 +78,7 @@ public class Philosopher implements Runnable {
 
     /**
      * Constructor for our Philosopher classes with uniform chopstick needs (2)
-     * 
+     *
      * @param i - The unique identifier and thread number
      */
     public Philosopher(int i) {
@@ -94,9 +96,9 @@ public class Philosopher implements Runnable {
 
     /**
      * Method taken from JuiceBottler, thanks Nate
-     * 
+     *
      * @param time   - length of time we want to sleep the thread
-     * @param errMsg - error message thrown when we slepe the thread and it
+     * @param errMsg - error message thrown when we sleep the thread and it
      *               throws the InterruptedException
      * @return void
      */
@@ -118,7 +120,7 @@ public class Philosopher implements Runnable {
 
     /**
      * Getter for number of chopsticks
-     * 
+     *
      * @return The number of chopsticks that this Philosopher has
      */
     public int getChopsticks() {
@@ -139,9 +141,9 @@ public class Philosopher implements Runnable {
 
     /**
      * Function used to summarize each simulation
-     * 
+     *
      * @return String value that summarizes the Philosopher's ability to eat
-     *         throughout the simulation
+     * throughout the simulation
      */
     public String getEaten() {
         return "Philosopher #" + threadNum + " ate " + dumplingsEaten + " dumplings";
@@ -161,7 +163,7 @@ public class Philosopher implements Runnable {
     /**
      * Main method the initializes PhilosopherRandom instances and runs the
      * simulation based on the parameters defined in the class
-     * 
+     *
      * @param args - None taken
      */
     public static void main(String[] args) {
